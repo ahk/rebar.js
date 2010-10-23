@@ -1,31 +1,29 @@
+// Rebar is a factory library for javascript test fixtures
+// please instantiate like:
+//
+// var rb = new Rebar
 
-var Rebar = function() {
-  this.definitions = [];
-};
+function() {
+  Rebar = function() {
+    this.definitions = [];
+  };
 
-Rebar.prototype.def = function(factoryName, schema) {
-  this.definitions[factoryName] = schema;
-};
+  Rebar.prototype.def = function(factoryName, schema) {
+    this.definitions[factoryName] = schema;
+  };
 
-Rebar.prototype.build = function(factoryName) {
-  var factory = this.definitions[factoryName]
-  var widget = {};
-  for(var field in factory) {
-    if (!factory.hasOwnProperty(field)) continue;
-    typeof(factory[field]) === "function" ?
-      widget[field] = factory[field]() : widget[field] = factory[field];
-  }
-  return widget;
-};
-
-window.onload = function(){
-  var rb = new Rebar()
-  rb.def('larry', {
-    name : 'larry b',
-    age  : function() {
-      return Math.floor(Math.random() * 100);
+  Rebar.prototype.create = function(factoryName, objectName, opts) {
+    var factory = this.definitions[factoryName]
+    var widget = {};
+    for(var field in factory) {
+      if (!factory.hasOwnProperty(field)) continue;
+      typeof(factory[field]) === "function" ?
+        widget[field] = factory[field]() : widget[field] = factory[field];
     }
-  })
+    return widget;
+  };
 
-  console.log(rb.build('larry'))
-};
+  // WRITE THE id(), and support finding by objectName
+}()
+
+
