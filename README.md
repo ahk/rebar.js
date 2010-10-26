@@ -3,31 +3,37 @@
 please use like:
 
 <pre><code>
+// this is a rebar environment, contains factories
 var rebar = new Rebar()
 
+// define a factory: (<name> , <identifier field>)
 rebar.define('bunny', 'uniqueId',{
 	uniqueId  : function () {
 		return Math.floor(Math.random() * 9999);
-	}
+	},
 	isHoppy : true,
 	carrots : true
 })
 
+// get a defined factory by name
 var bunnies = rebar.factory('bunny')
 
+// create a bunny
+var oldBunny = bunnies.create('old', {
+	name    : 'long tooth',
+	legs    : 3,
+	lbs     : 10,
+	carrots : false
+})
+
+// create another bunny, linked to first bunny
+// by the identifier defined for the factory
 var nommler = bunnies.create('nomnom', {
 	name    : 'serious muncher',
 	legs    : 4,
 	lbs     : 20,
 	carrots : true,
 	parent  : bunnies.link('old')
-})
-
-var oldBunny = bunnies.create('old', {
-	name    : 'long tooth',
-	legs    : 3,
-	lbs     : 10,
-	carrots : false
 })
 </code></pre>
 
