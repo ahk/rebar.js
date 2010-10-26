@@ -19,7 +19,7 @@ var nommler = bunnies.create('nomnom', {
 	name    : 'serious muncher',
 	legs    : 4,
 	lbs     : 20,
-	carrots : true
+	carrots : true,
 	parent  : bunnies.link('old')
 })
 
