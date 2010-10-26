@@ -1,1 +1,36 @@
-Rebar will bring inner strength to your javascript test data.
+Rebar is a factory library for javascript test fixtures. It will bring 
+inner strength to your javascript test data.
+
+please use like:
+
+  var rebar = new Rebar()
+
+  rebar.def('bunny', 'uniqueId',{
+    uniqueId  : function () {
+      return Math.floor(Math.random() * 9999);
+    }
+    isHoppy : true,
+    carrots : true
+  })
+
+  var bunnies = rebar.group('bunny')
+
+  var fatBunny = bunnies.create('fatty', {
+    name    : 'fatty chunks',
+    legs    : 4,
+    lbs     : 20,
+    carrots : false
+    parent  : bunnies.link('old')
+  })
+
+  var oldBunny = bunnies.create('old', {
+    name    : 'serious geezer',
+    legs    : 4,
+    lbs     : 10,
+    carrots : false
+  })
+
+
+This will leave you with two bunnies, old and fatty.
+old is fatty's parent, linked by old's randomly generated
+uniqueId

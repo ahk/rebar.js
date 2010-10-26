@@ -1,29 +1,62 @@
 // Rebar is a factory library for javascript test fixtures
-// please instantiate like:
+
+// Top level Rebar environment.
 //
-// var rb = new Rebar
+Rebar = function() {
+  this.definitions = {};
+  this.factories = {};
+};
 
-function() {
-  Rebar = function() {
-    this.definitions = [];
-  };
-
-  Rebar.prototype.def = function(factoryName, schema) {
+// set up factory, register an identifier for linking, default schema
+Rebar.prototype.define = function(factoryName, identifier, schema) {
+  // don't let people clobber an existing factory
+  if (!this.factories[factoryName]) {
     this.definitions[factoryName] = schema;
+    this.factories[factoryName] = new RebarFactory(this, factoryName, identifier);
+  } else {
+    throw('You\'ve already defined a ' + factoryName + ' factory.')
   };
+};
 
-  Rebar.prototype.create = function(factoryName, objectName, opts) {
-    var factory = this.definitions[factoryName]
-    var widget = {};
-    for(var field in factory) {
-      if (!factory.hasOwnProperty(field)) continue;
-      typeof(factory[field]) === "function" ?
-        widget[field] = factory[field]() : widget[field] = factory[field];
-    }
-    return widget;
-  };
+// get a defined factory by name
+Rebar.prototype.factory = function(factoryName) {
+  return this.factories[factoryName];
+};
 
-  // WRITE THE id(), and support finding by objectName
-}()
+// Factories keep track of their relationship identifier, and previously
+// created objects of the same type.
+//
+RebarFactory = function(rebarInstance, factoryName, identifier) {
+  this.rebar = rebarInstance;
+  this.factoryName = factoryName;
+  this.schema = rebarInstance.definitions[factoryName];
+  this.collection = {};
+  this.identifier = identifier;
+};
 
+RebarFactory.prototype.create = function(objName, opts) {
+  var obj = {};
+  // factory defaults
+  for(var field in this.schema) {
+    if (!this.schema.hasOwnProperty(field)) continue;
+    typeof(this.schema[field]) === "function" ?
+      obj[field] = this.schema[field]() : obj[field] = this.schema[field];
+  }
+  // fixture specific options
+  for(var field in opts) {
+    if (!opts.hasOwnProperty(field)) continue;
+    typeof(opts[field]) === "function" ?
+      obj[field] = opts[field]() : obj[field] = opts[field];
+  }
+  this.collection[objName] = obj;
+  return obj;
+};
 
+RebarFactory.prototype.get = function (objName) {
+  return this.collection[objName];
+}
+
+// get the identifier for association links
+RebarFactory.prototype.link = function(objName) {
+  return this.collection[objName][this.identifier];
+};

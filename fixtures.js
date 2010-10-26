@@ -1,20 +1,23 @@
-window.onload = function(){
-  var rb = loadDefs()
-  var larry = rb.create('larry', 'l1', {
+window.loadFixtures = function(){
+
+  var rebar = loadDefs()
+  var larries = rebar.factory('larry')
+
+  larries.create('l1', {
     feet : 'two left ones'
   })
 
-  rb.create('larry','l2',{
+  larries.create('l2',{
     age : 25,
     name : 'l2'
   })
 
-  rb.create('larry','l3',{
+  larries.create('l3',{
     age : 20,
     name : 'l3',
-    // SUPPORT THIS USE CASE
-    parent : rb['l2'].id()
+    friend : larries.link('l1')
   })
 
-  console.log(larry.feet)
+  return larries;
+
 };
