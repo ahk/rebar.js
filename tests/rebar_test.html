@@ -1,0 +1,42 @@
+
+<!DOCTYPE html> 
+<html> 
+<!--
+Copyright 2007 The Closure Library Authors. All Rights Reserved.
+ 
+Use of this source code is governed by an Apache 2.0 License.
+See the COPYING file for details.
+--> 
+<head> 
+<meta http-equiv="X-UA-Compatible" content="IE=edge"> 
+<!-- REBAR stuff -->
+<title>REBAR.js Tests</title> 
+<script type="text/javascript" src="../rebar.js"></script>
+<script type="text/javascript" src="../rebar_defs.js"></script>
+<script type="text/javascript" src="../fixtures.js"></script>
+
+<!-- GOOGLE TESTING stuff -->
+<script src="../lib/goog/base.js"></script> 
+<script> 
+  goog.require('goog.testing.asserts');
+  goog.require('goog.testing.jsunit');
+</script> 
+</head> 
+<body> 
+  <script> 
+
+    //assertTrue
+    //assertThrowsJsUnitException
+
+    function setUp(){
+      window.loadFixtures()
+    }
+
+    function testRebarEnv() { 
+      var rebar = new Rebar();
+      assertTrue('this works', !!rebar.factories);
+    }
+
+  </script>
+</body>
+</html>
