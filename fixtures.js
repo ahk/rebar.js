@@ -8,14 +8,14 @@ window.loadFixtures = function(){
   })
 
   larries.create('l2',{
-    age : 25,
+    age  : 25,
     name : 'l2'
   })
 
   larries.create('l3',{
-    age : 20,
-    name : 'l3',
-    friend : larries.link('l1')
+    age       : 20,
+    name      : 'l3',
+    friend_id : larries.link('l1')
   })
 
   return larries;

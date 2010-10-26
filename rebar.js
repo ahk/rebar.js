@@ -3,7 +3,6 @@
 // Top level Rebar environment.
 //
 Rebar = function() {
-  this.definitions = {};
   this.factories = {};
 };
 
@@ -11,8 +10,7 @@ Rebar = function() {
 Rebar.prototype.define = function(factoryName, identifier, schema) {
   // don't let people clobber an existing factory
   if (!this.factories[factoryName]) {
-    this.definitions[factoryName] = schema;
-    this.factories[factoryName] = new RebarFactory(this, factoryName, identifier);
+    this.factories[factoryName] = new RebarFactory(this, factoryName, schema, identifier);
   } else {
     throw('You\'ve already defined a ' + factoryName + ' factory.')
   };
@@ -26,10 +24,10 @@ Rebar.prototype.factory = function(factoryName) {
 // Factories keep track of their relationship identifier, and previously
 // created objects of the same type.
 //
-RebarFactory = function(rebarInstance, factoryName, identifier) {
+RebarFactory = function(rebarInstance, factoryName, schema, identifier) {
   this.rebar = rebarInstance;
   this.factoryName = factoryName;
-  this.schema = rebarInstance.definitions[factoryName];
+  this.schema = schema;
   this.collection = {};
   this.identifier = identifier;
 };
